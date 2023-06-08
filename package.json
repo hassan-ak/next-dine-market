@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@clerk/nextjs": "^4.19.1",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-toast": "^1.1.4",
     "@sanity/image-url": "^1.0.2",
@@ -35,9 +36,12 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-hot-toast": "^2.4.1",
+    "react-id-swiper": "^4.0.0",
+    "react-slick": "^0.29.0",
     "react-social-icons": "^5.15.0",
     "sanity": "^3.11.3",
     "sharp": "^0.32.1",
+    "slick-carousel": "^1.8.1",
     "stripe": "^12.8.0",
     "swiper": "^9.3.2",
     "tailwind-merge": "^1.12.0",
@@ -48,6 +52,7 @@
   },
   "devDependencies": {
     "@types/canvas-confetti": "^1.6.0",
+    "@types/react-slick": "^0.23.10",
     "drizzle-kit": "^0.18.1",
     "prettier": "^2.8.8",
     "prettier-plugin-tailwindcss": "^0.3.0"

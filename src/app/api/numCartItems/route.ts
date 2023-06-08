@@ -1,12 +1,19 @@
 import { db } from '@/lib/db/drizzle';
-import { CartItem, NewCartItem, dine_market_cart } from '@/lib/db/schema';
 import { eq, sql } from 'drizzle-orm';
+import { dine_market_cart } from '@/lib/db/schema';
 import { NextRequest, NextResponse } from 'next/server';
 
+/**
+ * GET - numCartItems
+ * Api route to get number of items in the cart
+ * searches againt the user ID provided in the request header
+ * retuns zero with error code in case no user id or no response from db
+ * otherwise returns number of items in the db
+ */
 export async function GET(request: NextRequest) {
-  const url = request.nextUrl;
-  if (url.searchParams.has('userId')) {
-    const user_id = url.searchParams.get('userId') as string;
+  const userId = request.headers.get('authorization');
+  if (userId) {
+    const user_id = userId;
     try {
       const result = await db
         .select({
@@ -19,11 +26,6 @@ export async function GET(request: NextRequest) {
       return NextResponse.json([{ numItems: 0 }], { status: 500 });
     }
   } else {
-    return NextResponse.json([{ numItems: 0 }], { status: 200 });
+    return NextResponse.json([{ numItems: 0 }], { status: 500 });
   }
 }
-
-// INSERT INTO dine_market_cart (user_id, product_name, product_slug, product_type, product_image_url, product_size, product_quantity, product_price)
-// VALUES ('user123', 'Product A', 'product-a', 'Type A', 'https://example.com/product-a.jpg', 'Medium', 12, 10)
-// ON CONFLICT (user_id, product_name, product_size, product_price)
-// DO UPDATE SET product_quantity = dine_market_cart.product_quantity + EXCLUDED.product_quantity;

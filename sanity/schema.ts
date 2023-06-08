@@ -1,3 +1,7 @@
+/**
+ * Sanity schema
+ */
+
 import { type SchemaTypeDefinition } from 'sanity'
 import {product} from './product'
 

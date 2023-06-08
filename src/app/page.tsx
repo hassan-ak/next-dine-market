@@ -1,9 +1,11 @@
-import  Products  from '@/components/home/Products';
+/**
+ * Home Page
+ */
 import { Hero } from '@/components/home/Hero';
+import Products from '@/components/home/Products';
+import { Feature } from '@/components/home/Feature';
 import { Newsletter } from '@/components/home/Newsletter';
 import { Promotions } from '@/components/home/Promotions';
-import { Feature } from '@/components/home/Feature';
-
 
 export default function Home() {
   return (
@@ -16,6 +18,3 @@ export default function Home() {
     </div>
   );
 }
-
-
-

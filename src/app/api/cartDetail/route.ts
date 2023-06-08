@@ -1,12 +1,17 @@
 import { db } from '@/lib/db/drizzle';
-import { CartItem, NewCartItem, dine_market_cart } from '@/lib/db/schema';
+import { dine_market_cart } from '@/lib/db/schema';
 import { asc, eq, sql } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 
+/**
+ * GET - cartDetails 
+ * Get cart detail based on usr id
+ * return response on success
+ */
 export async function GET(request: NextRequest) {
-  const url = request.nextUrl;
-  if (url.searchParams.has('userId')) {
-    const user_id = url.searchParams.get('userId') as string;
+  const userId = request.headers.get('authorization');
+  if (userId) {
+    const user_id = userId;
     try {
       const result = await db
         .select()

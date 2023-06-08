@@ -1,3 +1,6 @@
+/**
+ * No product component to be rendered when no product for a specific slug
+ */
 import Link from 'next/link';
 
 export default function NoProducts() {

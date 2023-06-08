@@ -1,12 +1,22 @@
 'use client';
+
 import React, { useState } from 'react';
-import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import toast, { Toaster } from 'react-hot-toast';
 
+/**
+ * NewsLetter section of the Home Page
+ * input field and buttom for email
+ */
 export const Newsletter = () => {
+  // email input field state handler
   const [email, setEmail] = useState('');
 
+  /**
+   * Function to handle subscribe button action
+   * returns a toast based on e
+   */
   const handleButtonSubmit = () => {
     if (validateEmail(email)) {
       setEmail('');
@@ -15,13 +25,17 @@ export const Newsletter = () => {
       toast.error('Error : Email not Valid');
     }
   };
+
+  /**
+   * Function to check if email valid or not
+   */
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
   return (
-    <div className='pt-6 mx-auto'>
+    <div className='mx-auto pt-6'>
       <div className='relative'>
         {/* News Letter Component */}
         <div className='flex flex-col items-center justify-center py-10'>

@@ -1,5 +1,6 @@
-import Image from 'next/image';
 import React from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
 import hero from '@/../public/hero.png';
 import hero1 from '@/../public/hero1.png';
 import hero2 from '@/../public/hero2.png';
@@ -7,8 +8,12 @@ import hero3 from '@/../public/hero3.png';
 import hero4 from '@/../public/hero4.png';
 import { ShoppingCart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import Link from 'next/link';
 
+/**
+ * Hero section of the Home Page
+ * left section with the description
+ * right side with image
+ */
 export const Hero = () => {
   return (
     <div className='flex w-full flex-row items-start space-x-10'>

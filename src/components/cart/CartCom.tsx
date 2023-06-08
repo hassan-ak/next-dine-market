@@ -1,48 +1,64 @@
 'use client';
 
-import React, { useContext } from 'react';
+/**
+ * Complete Cart Component
+ */
+
 import { CartEmpty } from './CartEmpty';
-import { DineMarketContext } from '@/context/DineMarketContext';
+import React, { useContext } from 'react';
+import { CartItem } from '@/lib/db/schema';
 import { CartProduct } from './CartProduct';
 import { CartSummary } from './CartSummary';
-import { Suspense } from 'react';
-import { CartProductSkelton } from './CartProductSkelton';
 import { useEffect, useState } from 'react';
 import { getUserIdentifier } from '@/lib/cookie';
-import { CartSummarySkelton } from './CartSummarySkelton';
-import { CartItem } from '@/lib/db/schema';
+import { CartProductSkelton } from './CartProductSkelton';
+import { DineMarketContext } from '@/context/DineMarketContext';
 
 export const CartCom = () => {
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
   const dmContext = useContext(DineMarketContext);
   const userId = getUserIdentifier() as string;
-  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  /**
+   * State variables
+   */
   const [loading, setLoading] = useState(true);
   const [reFetch, setReFetch] = useState(true);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [bDisabled, setBDisabled] = useState(false);
 
-
+  /**
+   * Get cart details based on user ID
+   * set these values in respective state variable
+   * finally set loaind to false
+   */
   async function getCartDetail(userId: string) {
-    fetch(`${baseUrl}api/cartDetail?userId=${userId}`, {
+    fetch(`${baseUrl}api/cartDetail`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `${userId}`,
+      },
       cache: 'no-cache',
     })
       .then((response) => response.json())
       .then((response) => {
         if (response.length != 0) {
           setCartItems(response);
-          setLoading(false);
         }
+      })
+      .finally(() => {
+        setLoading(false);
       });
   }
 
+  // Fetch cart details on load and then every time reFetch updates
   useEffect(() => {
     setLoading(true);
     getCartDetail(userId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [reFetch]);
 
+  // When no items in cart return a empty cart comaponet
   if (dmContext?.cartItems == 0) {
     return <CartEmpty />;
   }
@@ -74,8 +90,7 @@ export const CartCom = () => {
         )}
       </div>
       <div className='basis-full lg:basis-1/5 xl:basis-1/3'>
-        <CartSummary bDisabled={bDisabled}
-              setBDisabled={setBDisabled}/>
+        <CartSummary bDisabled={bDisabled} setBDisabled={setBDisabled} />
       </div>
     </div>
   );

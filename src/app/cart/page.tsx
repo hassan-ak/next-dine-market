@@ -1,3 +1,6 @@
+/**
+ * Cart Page
+ */
 import { CartCom } from '@/components/cart/CartCom';
 
 export default async function Cart() {

@@ -1,15 +1,16 @@
-'use client';
-
+/**
+ * Over view of the product
+ * product details and product care details
+ */
 import { Dot } from 'lucide-react';
-import Image from 'next/image';
-import React, { useState } from 'react';
 
+// Componet params types
 interface OverviewProps {
   detail: string[];
-  care: string[]
+  care: string[];
 }
 
-export const Overview: React.FC<OverviewProps> = ({ detail,care }) => {
+export const Overview: React.FC<OverviewProps> = ({ detail, care }) => {
   return (
     <div className='z-10 mt-8 flex w-full flex-col items-start space-y-8 bg-white px-8 py-16 md:p-16'>
       {/* Title */}
@@ -39,13 +40,16 @@ export const Overview: React.FC<OverviewProps> = ({ detail,care }) => {
       {/* Care */}
       <div className='flex w-full flex-col space-y-8 sm:flex-row sm:justify-start sm:space-x-16 sm:space-y-0'>
         <p className='whitespace-nowrap font-semibold text-gray-700  md:basis-2/6'>
-        PRODUCT CARE
+          PRODUCT CARE
         </p>
 
         <ul className='flex-col space-y-2 md:basis-4/6'>
           {care.map((item: string, ind) => (
-            <li key={ind} className='flex text-justify tracking-wider text-gray-900 font-semibold'>
-              <Dot/> {item}
+            <li
+              key={ind}
+              className='flex text-justify font-semibold tracking-wider text-gray-900'
+            >
+              <Dot /> {item}
             </li>
           ))}
         </ul>

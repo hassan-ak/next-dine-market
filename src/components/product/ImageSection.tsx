@@ -1,5 +1,13 @@
 'use client';
 
+/**
+ * Product images
+ * Just loop over the images array
+ * disply them in a column
+ * select first image and disply on main grid
+ * on hover select image index and change main image based on index
+ */
+
 import Image from 'next/image';
 import React, { useState } from 'react';
 

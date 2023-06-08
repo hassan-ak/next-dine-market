@@ -1,3 +1,6 @@
+/**
+ * loading component for the cart summary section
+*/
 import React from 'react';
 import { Skeleton } from '../ui/skeleton';
 

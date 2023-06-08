@@ -1,3 +1,7 @@
+/** 
+ * Empty cart componet 
+ * to be displayed when no items in the cart
+*/
 import React from 'react'
 import { ShoppingBag } from 'lucide-react';
 

@@ -1,3 +1,6 @@
+/**
+ * Prodcut details
+ */
 import React from 'react';
 
 interface TitlePtops {

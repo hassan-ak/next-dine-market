@@ -1,3 +1,6 @@
+/**
+ * Not found componet to be rendered as a replacement of 404 not found
+ */
 import Link from 'next/link';
 
 export default function NotFound() {

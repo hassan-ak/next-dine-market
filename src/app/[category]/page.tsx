@@ -1,23 +1,37 @@
-import { Product } from '@/components/Product';
-import { client } from '../../../sanity/lib/client';
-import imageUrlBuilder from '@sanity/image-url';
-import { SanityImageSource } from '@sanity/image-url/lib/types/types';
+/** 
+ * Static pages for the categoris
+ * page is just the list of image cards for a particular category
+*/
+
+import { Key } from 'react';
 import Link from 'next/link';
 import NotFound from '../not-found';
-import { Key } from 'react';
+import { Product } from '@/components/Product';
+import { client } from '../../../sanity/lib/client';
+import { urlForImage } from '../../../sanity/lib/image';
 
+
+/**
+ * generate static params (fixeds)
+ */
 export async function generateStaticParams() {
   const categories: string[] = ['female', 'male', 'kids'];
-
   return categories.map((category) => ({
     category: category,
   }));
 }
 
+/**
+ * function to capatalize first leter of the input params
+ * to be used for staic params to match category on sanity
+ */
 function makeSearchParam(params: string) {
   return params.charAt(0).toUpperCase() + params.slice(1);
 }
 
+/**
+ * function to get data from sanity based on category
+*/
 const getProductData = async (param: string) => {
   const res = await client.fetch(
     `*[_type == "product" && category == "${makeSearchParam(
@@ -27,13 +41,9 @@ const getProductData = async (param: string) => {
   return res;
 };
 
-const builder = imageUrlBuilder(client);
 
-function urlFor(source: SanityImageSource) {
-  return builder.image(source);
-}
 
-export default async function GiveName({
+export default async function page({
   params,
 }: {
   params: { category: string };
@@ -53,7 +63,7 @@ export default async function GiveName({
           <Product
             name={prod.name}
             price={prod.price}
-            imgUrl={urlFor(prod.image[0]).width(400).url()}
+            imgUrl={urlForImage(prod.image[0]).width(400).url()}
             type={prod.type}
             catlog={true}
           />

@@ -1,5 +1,10 @@
-import { CheckCheck } from 'lucide-react';
+/**
+ * Payment success page
+ */
+
 import Link from 'next/link';
+import { CheckCheck } from 'lucide-react';
+
 export default async function SuccessPayment() {
 
   return (
