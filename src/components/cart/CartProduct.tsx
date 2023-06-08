@@ -1,10 +1,15 @@
+/**
+ * products on cart page
+ */
+
 import Image from 'next/image';
-import React, { useContext, useState } from 'react';
 import { getUserIdentifier } from '@/lib/cookie';
 import { Trash2, Minus, Plus } from 'lucide-react';
-import { DineMarketContext } from '@/context/DineMarketContext';
+import React, { useContext, useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
+import { DineMarketContext } from '@/context/DineMarketContext';
 
+// Component prop type
 interface CartProductProps {
   name: string;
   imgUrl: string;

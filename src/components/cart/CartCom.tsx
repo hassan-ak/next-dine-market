@@ -59,6 +59,11 @@ export const CartCom = () => {
   }, [reFetch]);
 
   // When no items in cart return a empty cart comaponet
+  if (dmContext?.nbFetchCompleted == false) {
+    return <CartProductSkelton />;
+  }
+
+  // When no items in cart return a empty cart comaponet
   if (dmContext?.cartItems == 0) {
     return <CartEmpty />;
   }

@@ -4,7 +4,7 @@ import { asc, eq, sql } from 'drizzle-orm';
 import { NextRequest, NextResponse } from 'next/server';
 
 /**
- * GET - cartDetails 
+ * GET - cartDetails
  * Get cart detail based on usr id
  * return response on success
  */
@@ -30,9 +30,14 @@ export async function GET(request: NextRequest) {
   }
 }
 
+/**
+ * PATCH - cartDetails
+ * update cart details
+ * select data on db based on user id and cart id
+ * update quatity
+ */
 export async function PATCH(request: NextRequest) {
   let body = await request.json();
-
   try {
     const updatedQuantity: { updatedQuantity: number }[] = await db
       .update(dine_market_cart)
@@ -47,8 +52,11 @@ export async function PATCH(request: NextRequest) {
   }
 }
 
-// await db.delete(users).where(eq(users.name, 'Dan'));
-
+/**
+ * DELETE - cartDetails
+ * delete cart details
+ * delete data on db based on user id and cart id
+ */
 export async function DELETE(request: NextRequest) {
   const userId = request.headers.get('authorization');
   const cartId = request.headers.get('cartId');

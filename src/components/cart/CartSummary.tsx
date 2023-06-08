@@ -1,10 +1,14 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { getUserIdentifier } from '@/lib/cookie';
-import { DineMarketContext } from '@/context/DineMarketContext';
-import { CartSummarySkelton } from './CartSummarySkelton';
+/**
+ * Cart Summary
+ */
+import toast from 'react-hot-toast';
 import getStripePromise from '@/lib/stripe';
-import toast, { Toaster } from 'react-hot-toast';
+import { getUserIdentifier } from '@/lib/cookie';
+import { CartSummarySkelton } from './CartSummarySkelton';
+import React, { useContext, useEffect, useState } from 'react';
+import { DineMarketContext } from '@/context/DineMarketContext';
 
+// Component prop types
 interface CartSummaryProps {
   bDisabled: boolean;
   setBDisabled: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,13 +18,17 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
   bDisabled,
   setBDisabled,
 }) => {
-  const dmContext = useContext(DineMarketContext);
   const userId = getUserIdentifier() as string;
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const dmContext = useContext(DineMarketContext);
+
   const [qunat, setQuant] = useState(null);
   const [price, setPrice] = useState(null);
   const [loading, setLoading] = useState(true);
 
+  /**
+   * Function to handle interaction with stripe checkout
+   */
   async function checkoutHandle() {
     const toastId = toast.loading('trying checkout');
     setBDisabled(true);
@@ -47,10 +55,17 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
       });
   }
 
+  /**
+   * Function to send get request to get cart summary based on user id
+   * get number of items and amount / price
+   */
   async function getCartSummary(userId: string) {
-    fetch(`${baseUrl}api/cartSummary?userId=${userId}`, {
+    fetch(`${baseUrl}api/cartSummary`, {
       method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `${userId}`,
+      },
       cache: 'no-cache',
     })
       .then((response) => response.json())
@@ -61,12 +76,17 @@ export const CartSummary: React.FC<CartSummaryProps> = ({
       });
   }
 
+  /**
+   * get cart summary when ever component loads
+   * re-run if number of items in context change
+   */
   useEffect(() => {
     setLoading(true);
     getCartSummary(userId);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dmContext?.cartItems]);
 
+  // returns a skelton when loading
   if (loading) {
     return <CartSummarySkelton />;
   }

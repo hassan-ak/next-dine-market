@@ -57,6 +57,7 @@ export const Navbar = () => {
       })
       .finally(() => {
         setLoading(false);
+        dmContext?.setNbFetchCompleted(true)
       });
   }
 

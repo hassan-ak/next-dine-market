@@ -49,6 +49,11 @@ export async function POST(request: NextRequest) {
   }
 }
 
+/**
+ * DELETE - addToCart
+ * Api route to delete cart items from db
+ * delete all items from db
+ */
 export async function DELETE(request: NextRequest) {
   const url = request.nextUrl;
   if (url.searchParams.has('user_id')) {
