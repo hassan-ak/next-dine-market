@@ -1,5 +1,6 @@
 import './globals.css';
 import { sora } from '@/styles/fonts';
+import { ClerkProvider } from '@clerk/nextjs'
 import { Navbar } from '@/components/navbar/Navbar';
 import { Footer } from '@/components/footer/Footer';
 import { DineMarketContextProvider } from '@/context/DineMarketContext';
@@ -18,6 +19,7 @@ export default function RootLayout({
     <html lang='en'>
       <body className={`${sora.className} overflow-x-hidden bg-white`}>
         <div className='flex min-h-screen flex-col'>
+          <ClerkProvider>
             <DineMarketContextProvider>
               <Navbar />
               <div className='mt-14 flex-grow py-4 md:mt-[88px] md:py-8 lg:mt-[110px]'>
@@ -25,6 +27,7 @@ export default function RootLayout({
               </div>
               <Footer />
             </DineMarketContextProvider>
+          </ClerkProvider>
         </div>
       </body>
     </html>

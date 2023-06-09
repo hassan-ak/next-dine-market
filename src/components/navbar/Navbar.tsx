@@ -10,10 +10,20 @@ import Image from 'next/image';
 import { v4 as uuidv4 } from 'uuid';
 import logo from '@/../public/logo.png';
 import { Skeleton } from '../ui/skeleton';
-import { Search, ShoppingCart, Menu, X } from 'lucide-react';
+import { usePathname } from 'next/navigation'
+import { Search, ShoppingCart, Menu, X, LogIn } from 'lucide-react';
 import React, { useContext, useState, useEffect } from 'react';
 import { DineMarketContext } from '@/context/DineMarketContext';
 import { setUserIdentifier, getUserIdentifier } from '@/lib/cookie';
+import {
+  SignInButton,
+  SignedIn,
+  SignedOut,
+  ClerkLoaded,
+  ClerkLoading,
+  UserButton,
+  useUser,
+} from '@clerk/nextjs';
 
 export const Navbar = () => {
   /**
@@ -28,12 +38,14 @@ export const Navbar = () => {
 
   const dmContext = useContext(DineMarketContext);
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
+  const pathname = usePathname()
+  const { user,isSignedIn } = useUser();
 
   /**
    * function to execute a GET request for number of items in cart
    * sends userID in the request
    * set number of items in the context variable if found in db otherwise zero
-   * finally set loading to false 
+   * finally set loading to false
    */
   async function getNumCartItems(userId: string) {
     fetch(`${baseUrl}api/numCartItems?userId=${userId}`, {
@@ -57,7 +69,7 @@ export const Navbar = () => {
       })
       .finally(() => {
         setLoading(false);
-        dmContext?.setNbFetchCompleted(true)
+        dmContext?.setNbFetchCompleted(true);
       });
   }
 
@@ -116,7 +128,7 @@ export const Navbar = () => {
               All Products
             </Link>
           </div>
-          <div className='flex min-w-[250px] items-center space-x-2 rounded-md border-[1px] border-gray-300 px-1 py-[3px]'>
+          <div className='flex min-w-[175px] items-center space-x-2 rounded-md border-[1px] border-gray-300 px-1 py-[3px] xl:min-w-[250px]'>
             <Search size={15} color={'gray'} />
             <input
               type='text'
@@ -125,29 +137,56 @@ export const Navbar = () => {
             />
           </div>
         </div>
-        {/*** Cart, displays num of items too ***/}
-        {/*** shows skeleton when loading data from db ***/}
-        <Link
-          href={'/cart'}
-          className='relative hidden cursor-pointer rounded-full bg-gray-100 p-3 lg:flex'
-        >
-          <ShoppingCart size={22} />
-          {!loading ? (
-            <span className='absolute right-1 top-0 rounded-full bg-red-500 px-[6px] py-[2px] text-xs text-white'>
-              {dmContext?.cartItems}
-            </span>
-          ) : (
-            <div className='absolute right-1 top-0 rounded-full'>
-              <Skeleton className='h-4 w-4 rounded-full bg-red-500' />
-            </div>
-          )}
-        </Link>
-        {/*** button to open and close mobile menu***/}
-        <div
-          className='block cursor-pointer lg:hidden'
-          onClick={() => setIsOpen(!isOpen)}
-        >
-          {isOpen ? <X size={20} /> : <Menu size={20} />}
+        {/*** user, cart and hammburger button ***/}
+        <div className='inline-flex h-8 min-w-[95px] items-center justify-between space-x-3 custom1:min-w-[115px] custom1:space-x-5 lg:h-12'>
+          {/*** User signin / menu button from clerk ***/}
+          <div className='inline-flex items-center'>
+            <ClerkLoading>
+              <Skeleton className='h-8 w-8 rounded-full bg-gray-100 lg:h-12 lg:w-12' />
+            </ClerkLoading>
+            <ClerkLoaded>
+              <SignedIn>
+                {isSignedIn == true ? (
+                  <div>
+                    <UserButton afterSignOutUrl='/'/>
+                  </div>
+                ) : (
+                  <Skeleton className='h-8 w-8 rounded-full bg-gray-100 lg:h-12 lg:w-12' />
+                )}
+              </SignedIn>
+              <SignedOut>
+                <SignInButton mode='modal' redirectUrl={pathname}>
+                  <button className='inline-flex h-8 w-8 items-center justify-center lg:h-12 lg:w-12'>
+                    <LogIn size={25} color='green' />
+                  </button>
+                </SignInButton>
+              </SignedOut>
+            </ClerkLoaded>
+          </div>
+          {/*** Cart, displays num of items too ***/}
+          {/*** shows skeleton when loading data from db ***/}
+          <Link
+            href={'/cart'}
+            className='relative hidden cursor-pointer rounded-full bg-gray-100 p-3 lg:flex'
+          >
+            <ShoppingCart size={22} />
+            {!loading ? (
+              <span className='absolute right-1 top-0 rounded-full bg-red-500 px-[6px] py-[2px] text-xs text-white'>
+                {dmContext?.cartItems}
+              </span>
+            ) : (
+              <div className='absolute right-1 top-0 rounded-full'>
+                <Skeleton className='h-4 w-4 rounded-full bg-red-500' />
+              </div>
+            )}
+          </Link>
+          {/*** button to open and close mobile menu***/}
+          <div
+            className='block cursor-pointer lg:hidden'
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            {isOpen ? <X size={20} /> : <Menu size={20} />}
+          </div>
         </div>
       </div>
       {/*** Mobile Menu, closes when-any of the link is clicked***/}

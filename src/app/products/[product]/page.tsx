@@ -52,6 +52,14 @@ export async function generateStaticParams() {
   }));
 }
 
+/**
+ * By defult this page is going toe be rendered as static page
+ * as clerk is used in navbar for user management
+ * clerk by-default try to render this page dynamically to update headers
+ * adding following line enforces to render this page statically
+ */
+export const dynamic = 'force-static';
+
 export default async function Product({
   params,
 }: {
